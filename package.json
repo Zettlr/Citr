@@ -1,0 +1,30 @@
+{
+    "name": "citr",
+    "version": "1.0.0",
+    "description": "A small library to parse Markdown Citeproc notation as CSL JSON",
+    "author": "Hendrik Erz <hendrik@zettlr.com>",
+    "license": "GPL-3.0",
+    "main": "dist/citr.js",
+    "types": "dist/citr.d.ts",
+    "scripts": {
+    "prepublish": "yarn build",
+    "test": "node ./test/index.js",
+    "build": "tsc",
+    "watch": "tsc -w"
+    },
+    "keywords": [
+    "CSL",
+    "JSON",
+    "Citeproc",
+    "Citation",
+    "Zotero",
+    "API"
+    ],
+    "devDependencies": {
+    "chalk": "^2.4.2",
+    "typescript": "^3.5.1"
+    },
+    "dependencies": {
+    "@types/node": "^12.0.7"
+    }
+}
