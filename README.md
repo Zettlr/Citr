@@ -13,13 +13,13 @@ This module transforms citations as they are described in the Pandoc manual into
 With NPM:
 
 ```bash
-$ npm install citr
+$ npm install zettlr/citr
 ```
 
 With Yarn:
 
 ```bash
-$ yarn add citr
+$ yarn add zettlr/citr
 ```
 
 ## Usage

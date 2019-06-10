@@ -1,5 +1,5 @@
 {
-    "name": "citr",
+    "name": "@zettlr/citr",
     "version": "1.0.0",
     "description": "A small library to parse Markdown Citeproc notation as CSL JSON",
     "author": "Hendrik Erz <hendrik@zettlr.com>",
