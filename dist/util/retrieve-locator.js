@@ -25,7 +25,6 @@ function retrieveLocator(locatorString) {
                 return { "label": locale[loc], "natural": loc };
         }
     }
-    console.error(`Nothing found for ${locatorString}!`);
     return { "label": "", "natural": "" };
 }
 function extractLocator(afterKey) {

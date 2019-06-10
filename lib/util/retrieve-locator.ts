@@ -57,7 +57,6 @@ function retrieveLocator (locatorString: string): LocatorResult {
   if (locatorString.indexOf(loc) === 0) return { "label": locale[loc], "natural": loc }
     }
   }
-  console.error(`Nothing found for ${locatorString}!`)
 
   return { "label": "", "natural": "" }
 }

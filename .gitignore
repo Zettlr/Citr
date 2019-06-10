@@ -1,0 +1,9 @@
+# Node modules
+node_modules
+
+# Hidden files and stuff
+/**/.DS_Store
+
+# Don't commit these pesky yarn logs
+yarn-error.log
+yarn.log
