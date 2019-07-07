@@ -51,7 +51,10 @@ let testingCitationsTrue = [
   '[außerdem @Volk2017, Abschn. 2-3]',
   // Some French expressions for the French recogniser
   '[@Lavalier1876, liv. 3]',
-  '[@Bourdieu1976, chapitre 2]'
+  '[@Bourdieu1976, chapitre 2]',
+  // Now some in-text @-citekeys without brackets
+  '@Autor2015',
+  '@Hello_World1970'
 ]
 
 /**

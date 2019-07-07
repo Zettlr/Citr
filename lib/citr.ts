@@ -50,6 +50,18 @@ interface Citation {
  * @memberof Citr
  */
 export function parseSingle(citation: string): Citation[] {
+  if (validateCitationID(citation) && citation[0] === '@') {
+    // It appears the citation was citekey-only. So let's just return that one.
+    return [{
+      "prefix": '',
+      "suffix": '',
+      "id": citation.substr(1),
+      "locator": '',
+      "label": 'page',
+      "suppress-author": false
+    }]
+  }
+
   if (!validateFullCitation(citation)) throw new Error(`Invalid Citation - Invalid citation passed: ${citation}.`)
 
   let returnCitations: Citation[] = []

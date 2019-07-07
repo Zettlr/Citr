@@ -8,6 +8,16 @@ exports.util = {
     "extractCitations": extract_citations_1.extractCitations
 };
 function parseSingle(citation) {
+    if (validator_1.validateCitationID(citation) && citation[0] === '@') {
+        return [{
+                "prefix": '',
+                "suffix": '',
+                "id": citation.substr(1),
+                "locator": '',
+                "label": 'page',
+                "suppress-author": false
+            }];
+    }
     if (!validator_1.validateFullCitation(citation))
         throw new Error(`Invalid Citation - Invalid citation passed: ${citation}.`);
     let returnCitations = [];
