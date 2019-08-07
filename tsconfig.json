@@ -11,5 +11,6 @@
     "noImplicitAny": false,
     "removeComments": true,
     "declaration": true
-  }
+  },
+  "include": ["lib/**/*"]
 }
