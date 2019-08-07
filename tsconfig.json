@@ -9,6 +9,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitAny": false,
-    "removeComments": true
+    "removeComments": true,
+    "declaration": true
   }
 }
