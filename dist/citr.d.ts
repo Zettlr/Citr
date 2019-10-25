@@ -12,6 +12,6 @@ interface Citation {
     "label": string;
     "suppress-author": boolean;
 }
-export declare function parseSingle(citation: string): Citation[];
+export declare function parseSingle(citation: string, strict?: boolean): Citation[];
 export declare function makeCitation(citationArray: Citation[]): string;
 export {};

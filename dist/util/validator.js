@@ -20,7 +20,12 @@ function validateCitationPart(citation) {
     return citation.split('@').length === 2;
 }
 exports.validateCitationPart = validateCitationPart;
-function validateCitationID(id) {
-    return /^@?[a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*$/.test(id);
+function validateCitationID(id, strict = false) {
+    if (strict) {
+        return /^@?[a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*$/.test(id);
+    }
+    else {
+        return /^@?[\p{L}\d_][\p{L}\d_:.#$%&\-+?<>~\/]*$/u.test(id);
+    }
 }
 exports.validateCitationID = validateCitationID;

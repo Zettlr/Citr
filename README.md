@@ -138,6 +138,30 @@ let markdownCitation = Citr.makeCitation(csl)
 
 You can, of course, also pass one single object to the engine.
 
+## Legacy ("strict") mode
+
+Citr 1.1 changed the behaviour of `validateCitationID`. If called using the same signature as before, it will be more relaxed concerning what characters are allowed and will include all non-latin scripts by default. This means that citation IDs containing Chinese, Japanese, or other characters will also be valid. To retain the old behaviour, you simply need to pass `true` as the second parameter to both `validateCitationID` and `parseSingle` (as the latter calls the former, thereby passing the value).
+
+Example:
+
+```javascript
+const Citr = require('Citr')
+
+let asciiKey = '@Doe1990'
+let unicodeKey = '@村上2018'
+
+Citr.util.validateCitationID(asciiKey) // true
+Citr.util.validateCitationID(asciiKey, true) // true (strict mode enabled)
+Citr.util.validateCitationID(unicodeKey) // true (Japanese characters are allowed)
+Citr.util.validateCitationID(unicodeKey, true) // false (only ASCII characters allowed)
+
+try {
+  let citation = Citr.parseSingle(unicodeKey, true) // Enable strict mode
+} catch (err) {
+  console.error('An error will be thrown, as parseSingle will call validateCitationID using strict mode')
+}
+```
+
 ## Contributions
 
 Contributions and PRs are welcome. By contributing, you agree that your code will also be made available under the GNU GPL v3 license.

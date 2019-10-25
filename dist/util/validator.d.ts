@@ -12,4 +12,4 @@
  */
 export declare function validateFullCitation(citation: string): Boolean;
 export declare function validateCitationPart(citation: string): Boolean;
-export declare function validateCitationID(id: string): Boolean;
+export declare function validateCitationID(id: string, strict?: boolean): Boolean;

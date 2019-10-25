@@ -7,8 +7,8 @@ exports.util = {
     "validateCitationID": validator_1.validateCitationID,
     "extractCitations": extract_citations_1.extractCitations
 };
-function parseSingle(citation) {
-    if (validator_1.validateCitationID(citation) && citation[0] === '@') {
+function parseSingle(citation, strict = false) {
+    if (validator_1.validateCitationID(citation, strict) && citation[0] === '@') {
         return [{
                 "prefix": '',
                 "suffix": '',

@@ -46,11 +46,12 @@ interface Citation {
  * Parses a single citation
  *
  * @param {string} citation The citation to parse
+ * @param {Boolean} [strict=false] Whether or not to use strict mode (see source of validateCitationID for explanations)
  * @returns {Citation[]} An array containing all found citation keys.
  * @memberof Citr
  */
-export function parseSingle(citation: string): Citation[] {
-  if (validateCitationID(citation) && citation[0] === '@') {
+export function parseSingle(citation: string, strict: boolean = false): Citation[] {
+  if (validateCitationID(citation, strict) && citation[0] === '@') {
     // It appears the citation was citekey-only. So let's just return that one.
     return [{
       "prefix": '',

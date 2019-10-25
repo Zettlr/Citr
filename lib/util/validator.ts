@@ -46,13 +46,35 @@ export function validateCitationPart (citation: string): Boolean {
  * The preceeding @ may be omitted.
  *
  * @export
- * @param {string} id the ID to be tested
+ * @param {string} id The ID to be tested
+ * @param {Boolean} [strict=false] Whether or not to use strict mode (see source for explanations)
  * @returns {Boolean} True or false, depending of the outcome.
  */
-export function validateCitationID (id: string): Boolean {
-  // The ID must have the following form:
-  // 1. Begin with an @.
-  // 2. Followed by a-zA-Z0-9_.
-  // 3. Optionally followed by a-za-Z0-9_ and (:.#$%&-+?<>~/).
-  return /^@?[a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*$/.test(id)
+export function validateCitationID (id: string, strict: boolean = false): Boolean {
+  // Why should you use strict mode? There should be few scenarios where this is
+  // *really* necessary, but among them are: environments where you cannot be sure
+  // that Unicode is actually present; you want to enforce simple citation keys;
+  // you have to deal with adversarial environments where other parts further down
+  // the pipeline might cough if they encounter non-ascii characters. For normal use
+  // (read in Markdown and validate the contained citations against a library on a
+  // local environment for a normal end-user), non-strict should be preferred.
+  if (strict) {
+    // The ID must have the following form:
+    // 1. Begin with an @.
+    // 2. Followed by a-zA-Z0-9_.
+    // 3. Optionally followed by a-za-Z0-9_ and (:.#$%&-+?<>~/).
+    return /^@?[a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*$/.test(id)
+  } else {
+    // As Pandoc tries to be as forgiving as possible when it comes
+    // to what is allowed, we'll also allow any conceivable character
+    // from any script (also non-latin, such as Japanese, Chinese,
+    // Ethiopian, or Russian) to be part of the citation ID. As we
+    // make use of Unicode flags, this might cause errors in older
+    // browsers, but the alternative would be a 14,000 characters
+    // monster that we certainly don't want in our file. Keep it nice
+    // and clean, and whoever wants to use Internet Explorer can go
+    // someplace else.
+    // See the discussion here: https://groups.google.com/forum/#!topic/pandoc-discuss/Dwgim0y8VEs
+    return /^@?[\p{L}\d_][\p{L}\d_:.#$%&\-+?<>~\/]*$/u.test(id)
+  }
 }
