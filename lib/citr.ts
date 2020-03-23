@@ -63,7 +63,7 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
     }]
   }
 
-  if (!validateFullCitation(citation)) throw new Error(`Invalid Citation - Invalid citation passed: ${citation}.`)
+  if (!validateFullCitation(citation)) throw new Error(`Invalid Key - Invalid citation passed: ${citation}.`)
 
   let returnCitations: Citation[] = []
 
