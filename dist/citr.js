@@ -19,7 +19,7 @@ function parseSingle(citation, strict = false) {
             }];
     }
     if (!validator_1.validateFullCitation(citation))
-        throw new Error(`Invalid Citation - Invalid citation passed: ${citation}.`);
+        throw new Error(`Invalid Key - Invalid citation passed: ${citation}.`);
     let returnCitations = [];
     let _citation = citation.substr(1, citation.length - 2).split(';');
     for (let c of _citation) {
