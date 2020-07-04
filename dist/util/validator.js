@@ -12,8 +12,9 @@
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+const regex_1 = require("./regex");
 function validateFullCitation(citation) {
-    return /^\[([^[\]]*@[^[\]]+)\]$/.test(citation);
+    return regex_1.fullCitationValidatorRE.test(citation);
 }
 exports.validateFullCitation = validateFullCitation;
 function validateCitationPart(citation) {
@@ -22,10 +23,10 @@ function validateCitationPart(citation) {
 exports.validateCitationPart = validateCitationPart;
 function validateCitationID(id, strict = false) {
     if (strict) {
-        return /^@?[a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*$/.test(id);
+        return regex_1.strictCitekeyValidatorRE.test(id);
     }
     else {
-        return /^@?[\p{L}\d_][\p{L}\d_:.#$%&\-+?<>~\/]*$/u.test(id);
+        return regex_1.looseCitekeyValidatorRE.test(id);
     }
 }
 exports.validateCitationID = validateCitationID;

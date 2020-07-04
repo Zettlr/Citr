@@ -11,17 +11,27 @@
  *
  * END HEADER
  */
-import { validateFullCitation, validateCitationPart, validateCitationID } from "./util/validator"
-import { extractLocator } from "./util/retrieve-locator"
-import { extractCitations } from "./util/extract-citations"
+import {
+  validateFullCitation,
+  validateCitationPart,
+  validateCitationID
+} from './util/validator'
+
+import {
+  strictCitekeyValidatorRE,
+  looseCitekeyValidatorRE
+} from './util/regex'
+
+import { extractLocator } from './util/retrieve-locator'
+import { extractCitations } from './util/extract-citations'
 
 /**
    * Expose validateCitationID and extractCitations to the outside.
    *
    */
 export const util = {
-  "validateCitationID": validateCitationID,
-  "extractCitations": extractCitations
+  'validateCitationID': validateCitationID,
+  'extractCitations': extractCitations
 }
 
 /**
@@ -35,12 +45,12 @@ export const util = {
  * @interface Citation
  */
 interface Citation {
-  "prefix": string,
-  "suffix": string,
-  "id": string,
-  "locator": string,
-  "label": string,
-  "suppress-author": boolean
+  prefix: string,
+  suffix: string,
+  id: string,
+  locator: string,
+  label: string,
+  'suppress-author': boolean
 }
 /**
  * Parses a single citation
@@ -54,12 +64,12 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
   if (validateCitationID(citation, strict) && citation[0] === '@') {
     // It appears the citation was citekey-only. So let's just return that one.
     return [{
-      "prefix": '',
-      "suffix": '',
-      "id": citation.substr(1),
-      "locator": '',
-      "label": 'page',
-      "suppress-author": false
+      prefix: '',
+      suffix: '',
+      id: citation.substr(1),
+      locator: '',
+      label: 'page',
+      'suppress-author': false
     }]
   }
 
@@ -94,33 +104,45 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
     // Make sure to re-trim the prefix again to remove potential whitespace.
     if (suppressAuthor) prefix = prefix.substr(0, prefix.length - 1).trim()
 
-    // Now we need to extract the citation key. We know from the docs that the citation
-    // key may only contain a certain subset of characters, so simply match them greedily.
-    // The first non-allowed character will mark the end of the citation key.
-    let extractedKey = /^([a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*)/.exec(c.split('@')[1])
+    // Now we need to extract the citation key. We'll be reusing the citation
+    // validator regular expression. But as the secondHalf also contains the
+    // suffix, locator, etc., we have to first cut it down. Therefore, we'll
+    // assume a comma to separate the citekey from the rest of the suffix (or
+    // extract everything, if there is no comma in there.)
+    let commaIndex: number | undefined = c.split('@')[1].indexOf(',') + 1
+    // Pass undefined to extract everything
+    if (commaIndex <= 0) commaIndex = undefined
+    let citationKeyPart = c.substr(c.indexOf('@'), commaIndex)
+    let extractedKey: RegExpExecArray | null = null
+    if (strict) {
+      extractedKey = looseCitekeyValidatorRE.exec(citationKeyPart)
+    } else {
+      extractedKey = strictCitekeyValidatorRE.exec(citationKeyPart)
+    }
 
     // If the match has not been found, abort
     if (extractedKey === null) throw new Error(`Invalid Key - Invalid citation passed: ${c}`)
 
-    // Now Index 1 contains the valid ID.
+    // Now group 1 contains the valid ID.
     let citeKey = extractedKey[1]
 
-    // The final two things that could possibly still be in the citation are a locator
-    // and a suffix. Let us first extract everything after the key.
-   let afterKey = extractedKey.input.substr(citeKey.length).trim()
+    // The final two things that could possibly still be in the citation are a
+    // locator and a suffix. Let us first extract everything after the key.
+   let afterKey = c.split('@')[1].substr(extractedKey[0].length + 1).trim()
 
-    // The logic to get the locator is extremely difficult, as the locator mainly is written in natural language.
-    // We'll offload the work to retrieve the locator and the suffix to a utility function.
+    // The logic to get the locator is extremely difficult, as the locator
+    // mainly is written in natural language. We'll offload the work to
+    // retrieve the locator and the suffix to a utility function.
     let { suffix, locator, label } = extractLocator(afterKey)
 
     // Create a new Citation and push it to the array.
     returnCitations.push({
-      "prefix": prefix,
-      "suffix": suffix,
-      "id": citeKey,
-      "locator": locator,
-      "label": label,
-      "suppress-author": suppressAuthor
+      prefix: prefix,
+      suffix: suffix,
+      id: citeKey,
+      locator: locator,
+      label: label,
+      'suppress-author': suppressAuthor
     })
   }
 

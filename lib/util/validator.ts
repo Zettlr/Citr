@@ -11,6 +11,12 @@
  * END HEADER
  */
 
+import {
+  fullCitationValidatorRE,
+  strictCitekeyValidatorRE,
+  looseCitekeyValidatorRE
+} from './regex'
+
 /**
  * Returns true or false based upon the result of the regular expression given.
  *
@@ -22,7 +28,7 @@ export function validateFullCitation (citation: string): Boolean {
   // Citations, as defined in the reference, only need to be encapsulated in square brackets and
   // have one key beginning with an @. The validation of the ID is not the business of this
   // function. See validateCitationID for this matter.
-  return /^\[([^[\]]*@[^[\]]+)\]$/.test(citation)
+  return fullCitationValidatorRE.test(citation)
 }
 
 /**
@@ -63,7 +69,7 @@ export function validateCitationID (id: string, strict: boolean = false): Boolea
     // 1. Begin with an @.
     // 2. Followed by a-zA-Z0-9_.
     // 3. Optionally followed by a-za-Z0-9_ and (:.#$%&-+?<>~/).
-    return /^@?[a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*$/.test(id)
+    return strictCitekeyValidatorRE.test(id)
   } else {
     // As Pandoc tries to be as forgiving as possible when it comes
     // to what is allowed, we'll also allow any conceivable character
@@ -73,8 +79,8 @@ export function validateCitationID (id: string, strict: boolean = false): Boolea
     // browsers, but the alternative would be a 14,000 characters
     // monster that we certainly don't want in our file. Keep it nice
     // and clean, and whoever wants to use Internet Explorer can go
-    // someplace else.
-    // See the discussion here: https://groups.google.com/forum/#!topic/pandoc-discuss/Dwgim0y8VEs
-    return /^@?[\p{L}\d_][\p{L}\d_:.#$%&\-+?<>~\/]*$/u.test(id)
+    // someplace else. See the discussion here:
+    // https://groups.google.com/forum/#!topic/pandoc-discuss/Dwgim0y8VEs
+    return looseCitekeyValidatorRE.test(id)
   }
 }

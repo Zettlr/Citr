@@ -13,9 +13,9 @@
  * END HEADER
  */
 interface FullSuffix {
-    "locator": string;
-    "label": string;
-    "suffix": string;
+    locator: string;
+    label: string;
+    suffix: string;
 }
 export declare function extractLocator(afterKey: string): FullSuffix;
 export {};

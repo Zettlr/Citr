@@ -2,24 +2,32 @@
 /*!
  * BEGIN HEADER
  *
- * Contains:    This contains a utility function to extract all citations from a given text.
+ * Contains:    A utility function to extract citations from a piece of text.
  * Maintainer:  Hendrik Erz
  * License:     GNU GPL v3
  *
- * Description:     Simply pass a full Markdown file in here to extract all citations as an array.
+ * Description: Simply pass a full Markdown file to this function to extract
+ *              all citations as an array.
  *
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 const validator_1 = require("./validator");
-function extractCitations(file) {
+const regex_1 = require("./regex");
+function extractCitations(file, strict = false) {
     let allCitations = [];
-    let citationRE = /(\[([^[\]]*@[^[\]]+)\])/g;
     let citation;
-    while ((citation = citationRE.exec(file)) !== null) {
-        if (!validator_1.validateFullCitation(citation[0]))
-            continue;
-        allCitations.push(citation[0]);
+    while ((citation = regex_1.citationExtractionRE.exec(file)) !== null) {
+        if (citation[3]) {
+            if (!validator_1.validateCitationID(citation[3], strict))
+                continue;
+            allCitations.push(citation[3]);
+        }
+        else if (citation[1]) {
+            if (!validator_1.validateFullCitation(citation[1]))
+                continue;
+            allCitations.push(citation[1]);
+        }
     }
     return allCitations;
 }

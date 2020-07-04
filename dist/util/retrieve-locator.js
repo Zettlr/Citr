@@ -14,6 +14,7 @@
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+const regex_1 = require("../util/regex");
 const en_1 = require("../data/en");
 const de_1 = require("../data/de");
 const fr_1 = require("../data/fr");
@@ -21,18 +22,20 @@ const localeMappings = [en_1.en, de_1.de, fr_1.fr];
 function retrieveLocator(locatorString) {
     for (let locale of localeMappings) {
         for (let loc of Object.keys(locale)) {
-            if (locatorString.indexOf(loc) === 0)
-                return { "label": locale[loc], "natural": loc };
+            if (locatorString.indexOf(loc) === 0) {
+                return { label: locale[loc], natural: loc };
+            }
         }
     }
-    return { "label": "", "natural": "" };
+    return { label: '', natural: '' };
 }
 function extractLocator(afterKey) {
     let retObject = {
-        "locator": "",
-        "label": "page",
-        "suffix": ""
+        locator: '',
+        label: 'page',
+        suffix: ''
     };
+    afterKey = afterKey.trim();
     if (afterKey[0] === ',')
         afterKey = afterKey.substr(1).trim();
     if ([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0].includes(parseInt(afterKey[0]))) {
@@ -44,19 +47,19 @@ function extractLocator(afterKey) {
         return retObject;
     }
     let result = retrieveLocator(afterKey);
-    if (result.label === "") {
+    if (result.label === '') {
         retObject.suffix = afterKey;
         return retObject;
     }
     retObject.label = result.label;
-    afterKey = afterKey.replace(result.natural, '').trim();
+    afterKey = afterKey.substr(result.natural.length).trim();
+    let match;
     let splitIndex = 0;
-    let locatorRE = /(\d+(?:-\d+)?)/g;
-    while (locatorRE.exec(afterKey) !== null) {
-        splitIndex = locatorRE.lastIndex;
+    while ((match = regex_1.locatorRE.exec(afterKey)) !== null) {
+        splitIndex = match.index + match[0].length;
     }
-    retObject.locator = afterKey.substr(0, splitIndex);
-    retObject.suffix = afterKey.substr(splitIndex + 1);
+    retObject.locator = afterKey.substr(0, splitIndex).trim();
+    retObject.suffix = afterKey.substr(splitIndex + 1).trim();
     return retObject;
 }
 exports.extractLocator = extractLocator;

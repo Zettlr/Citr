@@ -1,21 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const validator_1 = require("./util/validator");
+const regex_1 = require("./util/regex");
 const retrieve_locator_1 = require("./util/retrieve-locator");
 const extract_citations_1 = require("./util/extract-citations");
 exports.util = {
-    "validateCitationID": validator_1.validateCitationID,
-    "extractCitations": extract_citations_1.extractCitations
+    'validateCitationID': validator_1.validateCitationID,
+    'extractCitations': extract_citations_1.extractCitations
 };
 function parseSingle(citation, strict = false) {
     if (validator_1.validateCitationID(citation, strict) && citation[0] === '@') {
         return [{
-                "prefix": '',
-                "suffix": '',
-                "id": citation.substr(1),
-                "locator": '',
-                "label": 'page',
-                "suppress-author": false
+                prefix: '',
+                suffix: '',
+                id: citation.substr(1),
+                locator: '',
+                label: 'page',
+                'suppress-author': false
             }];
     }
     if (!validator_1.validateFullCitation(citation))
@@ -31,19 +32,29 @@ function parseSingle(citation, strict = false) {
         let suppressAuthor = c.indexOf('@') > 0 && c[c.indexOf('@') - 1] === '-';
         if (suppressAuthor)
             prefix = prefix.substr(0, prefix.length - 1).trim();
-        let extractedKey = /^([a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*)/.exec(c.split('@')[1]);
+        let commaIndex = c.split('@')[1].indexOf(',') + 1;
+        if (commaIndex <= 0)
+            commaIndex = undefined;
+        let citationKeyPart = c.substr(c.indexOf('@'), commaIndex);
+        let extractedKey = null;
+        if (strict) {
+            extractedKey = regex_1.looseCitekeyValidatorRE.exec(citationKeyPart);
+        }
+        else {
+            extractedKey = regex_1.strictCitekeyValidatorRE.exec(citationKeyPart);
+        }
         if (extractedKey === null)
             throw new Error(`Invalid Key - Invalid citation passed: ${c}`);
         let citeKey = extractedKey[1];
-        let afterKey = extractedKey.input.substr(citeKey.length).trim();
+        let afterKey = c.split('@')[1].substr(extractedKey[0].length + 1).trim();
         let { suffix, locator, label } = retrieve_locator_1.extractLocator(afterKey);
         returnCitations.push({
-            "prefix": prefix,
-            "suffix": suffix,
-            "id": citeKey,
-            "locator": locator,
-            "label": label,
-            "suppress-author": suppressAuthor
+            prefix: prefix,
+            suffix: suffix,
+            id: citeKey,
+            locator: locator,
+            label: label,
+            'suppress-author': suppressAuthor
         });
     }
     return returnCitations;

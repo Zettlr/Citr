@@ -27,10 +27,18 @@ let testers = [
     ]
   },
   {
-    'input': `This`,
+    'input': `Pandoc-citeproc is able to extract @citekey without any
+    additional information such as [square brackets] from the text. So no
+    matter whether there are [citekeys with info @AutorYear, p. 23-45] or
+    a @citation without any info, everything should work out. Even on single
+    lines:
+
+    @anotherKey`,
     'expected': [
-      '[-@doe99]',
-      '[see -@doe99, pp. 33-35; also @smith04, chap. 1]'
+      '@citekey',
+      '[citekeys with info @AutorYear, p. 23-45]',
+      '@citation',
+      '@anotherKey'
     ]
   }
 ]
