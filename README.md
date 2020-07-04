@@ -1,4 +1,4 @@
-# Citr
+# ![Citr Logo](./citr_logo.png) Citr
 
 > Converts Markdown Citations to CSL JSON
 
@@ -25,10 +25,10 @@ $ yarn add @zettlr/citr
 ## Usage
 
 ```javascript
-Citr.parseSingle(markdown) // Parses a single citation from Markdown to CSL JSON
+Citr.parseSingle(markdown, strict?) // Parses a single citation from Markdown to CSL JSON
 Citr.makeCitation(csl) // Converts a CSL JSON citation to Markdown
-Citr.util.extractCitations(text) // Extracts all citations from a text
-Citr.util.validateCitationID(key) // Validates a given citation key
+Citr.util.extractCitations(text, strict?) // Extracts all citations from a text
+Citr.util.validateCitationID(key, strict?) // Validates a given citation key
 ```
 
 Citr exposes a small API that you can conveniently use:
@@ -140,7 +140,7 @@ You can, of course, also pass one single object to the engine.
 
 ## Legacy ("strict") mode
 
-Citr 1.1 changed the behaviour of `validateCitationID`. If called using the same signature as before, it will be more relaxed concerning what characters are allowed and will include all non-latin scripts by default. This means that citation IDs containing Chinese, Japanese, or other characters will also be valid. To retain the old behaviour, you simply need to pass `true` as the second parameter to both `validateCitationID` and `parseSingle` (as the latter calls the former, thereby passing the value).
+The `strict` parameter is optional and restores the behavior of versions pre `1.1.0` in that functions validating citekeys can either apply a strict mode or a "loose" mode. In strict mode, only a very small subset of ASCII characters are allowed for citekeys (no umlauts as ö, ü, é, è, non-latin script, etc.), while the loose mode will allow as many letter characters as possible. **By default, strict mode is off (`strict = false`)**. To enable strict mode, pass `true` to any of the functions that allow the strict mode.
 
 Example:
 
