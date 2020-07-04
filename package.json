@@ -12,7 +12,7 @@
     "types": "dist/citr.d.ts",
     "scripts": {
         "prepare": "yarn build",
-        "test": "node ./test/index.js",
+        "test": "mocha",
         "build": "tsc",
         "watch": "tsc -w"
     },
@@ -26,6 +26,7 @@
     ],
     "devDependencies": {
         "chalk": "^2.4.2",
+        "mocha": "^8.0.1",
         "typescript": "^3.5.1"
     },
     "dependencies": {
