@@ -1,4 +1,10 @@
-# ![Citr Logo](./citr_logo.png) Citr
+<p align="center">
+  <a href="https://github.com/Zettlr/Zettlr">
+    <img src="https://raw.githubusercontent.com/Zettlr/Citr/master/citr_logo.png" alt="Citr"/>
+  </a>
+</p>
+
+# Citr
 
 > Converts Markdown Citations to CSL JSON
 
