@@ -294,6 +294,35 @@ let singleCitations = [
       }
     ]
   },
+  // These tests test whether Citr works even if there is no comma immediately
+  // after the citation key
+  {
+    'input': '[vgl. @Koselleck2006 für einen Überblick]',
+    'expected': [
+      {
+        prefix: 'vgl.',
+        suffix: 'für einen Überblick',
+        id: 'Koselleck2006',
+        locator: '',
+        label: 'page',
+        'suppress-author': false
+      }
+    ]
+  },
+  // Tests to check if invalid citation parts end up being prefixes of the following ones
+  {
+    'input': '[ein invalider prefix; außerdem @Volk2017, Abschn. 2-3]',
+    'expected': [
+      {
+        prefix: 'ein invalider prefix; außerdem',
+        suffix: '',
+        id: 'Volk2017',
+        locator: '2-3',
+        label: 'section',
+        'suppress-author': false
+      }
+    ]
+  },
   // expected = undefined indicates that the function should throw
   {
     'input': 'Should not @work out',
@@ -310,7 +339,7 @@ let singleCitations = [
   {
     'input': '[Malformed ID inside @.this key]',
     'expected': undefined
-  },
+  }
 ]
 
 describe('Citr#parseSingle()', function () {

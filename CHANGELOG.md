@@ -1,3 +1,8 @@
+# 1.2.1
+
+- Fixed a logical error where activating strict mode would actually use the loose mode while parsing a single citation.
+- Fixed a problem where citation parts with no commas after the citekey would be reported as false and hence not parsed correctly.
+
 # 1.2.0
 
 - Refactored the code base to be more maintainable and streamlined.

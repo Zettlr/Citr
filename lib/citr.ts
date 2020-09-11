@@ -81,18 +81,42 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
   // they are simply square brackets. Additionally, split the citation along delimiters.
   let _citation = citation.substr(1, citation.length - 2).split(';')
 
+  let invalidPrefixes: string[] = []
+
   // Now iterate over all citations the user passed in to return them as an array.
   for (let c of _citation) {
     // It could be that the user just ended his/her citation with a ;
     if (c === '') continue
 
     // Make sure there is exactly one @ available.
-    if (!validateCitationPart(c)) throw new Error(`No key or multiple keys Found - Invalid citation passed: ${c}.`)
+    if (!validateCitationPart(c)) {
+      // If the validator fails, this means that there's no @ or multiple @,
+      // and hence no valid citation key in there. This means that the user has
+      // written something along the lines of [as we can see here; further
+      // @citekey1234; @citekey4321] or [see the corresponding mails
+      // hello@example.com and webmaster@example.com; further @citekey1234].
+      // --> treat it as a part of the prefix for the next citation part.
+      invalidPrefixes.push(c)
+      continue
+    }
 
-    // The Prefix is defined as everything before the citation key, so the first index of
-    // the split array will contain the Prefix (If @ is the first character, the string will
-    // be empty).
-    let prefix = c.split('@')[0].trim()
+    // The Prefix is defined as everything before the citation key, so the
+    // first index of the split array will contain the Prefix (If @ is the
+    // first character, the string will be empty). Make sure to add possible
+    // invalid prefixes from before
+    let prefix = ''
+    if (invalidPrefixes.length === 1) {
+      prefix = invalidPrefixes + ';'
+    }
+    else if (invalidPrefixes.length > 1) {
+      prefix = invalidPrefixes.join(';')
+    }
+
+    prefix += c.split('@')[0] // Add the actual prefix
+    prefix = prefix.trim() // Trim whitespaces
+
+    // Reset the additional prefixes here.
+    invalidPrefixes = []
 
     // Next, the user can decide to omit the author from the citation by prepending the
     // @-character with a minus (-). We cannot look for the end of the prefix because
@@ -106,18 +130,21 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
 
     // Now we need to extract the citation key. We'll be reusing the citation
     // validator regular expression. But as the secondHalf also contains the
-    // suffix, locator, etc., we have to first cut it down. Therefore, we'll
-    // assume a comma to separate the citekey from the rest of the suffix (or
-    // extract everything, if there is no comma in there.)
+    // suffix, locator, etc., we have to first cut it down. The citation key
+    // can either be terminated with a comma or with a space.
     let commaIndex: number | undefined = c.split('@')[1].indexOf(',') + 1
+    // If the commaIndex is 0, this means there was no comma - check for space
+    if (commaIndex === 0) commaIndex = c.split('@')[1].indexOf(' ') + 1
     // Pass undefined to extract everything
     if (commaIndex <= 0) commaIndex = undefined
+
+    // Now extract the key
     let citationKeyPart = c.substr(c.indexOf('@'), commaIndex)
     let extractedKey: RegExpExecArray | null = null
     if (strict) {
-      extractedKey = looseCitekeyValidatorRE.exec(citationKeyPart)
-    } else {
       extractedKey = strictCitekeyValidatorRE.exec(citationKeyPart)
+    } else {
+      extractedKey = looseCitekeyValidatorRE.exec(citationKeyPart)
     }
 
     // If the match has not been found, abort
@@ -128,7 +155,7 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
 
     // The final two things that could possibly still be in the citation are a
     // locator and a suffix. Let us first extract everything after the key.
-   let afterKey = c.split('@')[1].substr(extractedKey[0].length + 1).trim()
+   let afterKey = c.split('@')[1].substr(extractedKey[1].length).trim()
 
     // The logic to get the locator is extremely difficult, as the locator
     // mainly is written in natural language. We'll offload the work to
@@ -144,6 +171,12 @@ export function parseSingle(citation: string, strict: boolean = false): Citation
       label: label,
       'suppress-author': suppressAuthor
     })
+  }
+
+  // Indicate that no citation has been found, which is a good indicator
+  // that there is no valid citation (even excluding the invalid prefixes)
+  if (returnCitations.length === 0 && _citation.length > 0) {
+    throw new Error(`Invalid citation passed: ${citation}`)
   }
 
   // After everything has run, return all citations found.
