@@ -1,3 +1,8 @@
+# 1.2.2
+
+- Fixed the return types on the validators from `Boolean` to `boolean`.
+- The TypeScript target is now `ES2019`, because `es6` does not support the `Array.prototype.includes()`-method we were using.
+
 # 1.2.1
 
 - Fixed a logical error where activating strict mode would actually use the loose mode while parsing a single citation.

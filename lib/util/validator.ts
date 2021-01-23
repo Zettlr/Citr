@@ -22,9 +22,9 @@ import {
  *
  * @export
  * @param {string} citation
- * @returns Boolean
+ * @returns {boolean}
  */
-export function validateFullCitation (citation: string): Boolean {
+export function validateFullCitation (citation: string): boolean {
   // Citations, as defined in the reference, only need to be encapsulated in square brackets and
   // have one key beginning with an @. The validation of the ID is not the business of this
   // function. See validateCitationID for this matter.
@@ -37,9 +37,9 @@ export function validateFullCitation (citation: string): Boolean {
  *
  * @export
  * @param {string} citation The citation to check.
- * @returns {Boolean} True or false, based on the check.
+ * @returns {boolean} True or false, based on the check.
  */
-export function validateCitationPart (citation: string): Boolean {
+export function validateCitationPart (citation: string): boolean {
   // There must be exactly one citation key inside the given citation, so
   // if we split it, it must yield exactly two results. If it only yields
   // one result, there was no @ present, and if it yields more than two
@@ -53,10 +53,10 @@ export function validateCitationPart (citation: string): Boolean {
  *
  * @export
  * @param {string} id The ID to be tested
- * @param {Boolean} [strict=false] Whether or not to use strict mode (see source for explanations)
- * @returns {Boolean} True or false, depending of the outcome.
+ * @param {boolean} [strict=false] Whether or not to use strict mode (see source for explanations)
+ * @returns {boolean} True or false, depending of the outcome.
  */
-export function validateCitationID (id: string, strict: boolean = false): Boolean {
+export function validateCitationID (id: string, strict: boolean = false): boolean {
   // Why should you use strict mode? There should be few scenarios where this is
   // *really* necessary, but among them are: environments where you cannot be sure
   // that Unicode is actually present; you want to enforce simple citation keys;
