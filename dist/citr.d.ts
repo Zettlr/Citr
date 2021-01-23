@@ -1,8 +1,8 @@
 import { validateCitationID } from './util/validator';
 import { extractCitations } from './util/extract-citations';
 export declare const util: {
-    'validateCitationID': typeof validateCitationID;
-    'extractCitations': typeof extractCitations;
+    validateCitationID: typeof validateCitationID;
+    extractCitations: typeof extractCitations;
 };
 interface Citation {
     prefix: string;

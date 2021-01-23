@@ -13,6 +13,7 @@
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.locatorRE = exports.looseCitekeyValidatorRE = exports.strictCitekeyValidatorRE = exports.citationExtractionRE = exports.fullCitationValidatorRE = void 0;
 exports.fullCitationValidatorRE = /^\[([^[\]]*@[^[\]]+)\]$/;
 exports.citationExtractionRE = /(\[([^[\]]*@[^[\]]+)\])|(@[\p{L}\d_][\p{L}\d_:.#$%&\-+?<>~\/]*)/gu;
 exports.strictCitekeyValidatorRE = /^@?([a-zA-Z0-9_][a-zA-Z0-9_:.#$%&\-+?<>~/]*)$/;

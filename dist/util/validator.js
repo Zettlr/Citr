@@ -12,6 +12,7 @@
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateCitationID = exports.validateCitationPart = exports.validateFullCitation = void 0;
 const regex_1 = require("./regex");
 function validateFullCitation(citation) {
     return regex_1.fullCitationValidatorRE.test(citation);

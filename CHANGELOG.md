@@ -2,6 +2,7 @@
 
 - Fixed the return types on the validators from `Boolean` to `boolean`.
 - The TypeScript target is now `ES2019`, because `es6` does not support the `Array.prototype.includes()`-method we were using.
+- Improve error message (@tobiasdiez).
 
 # 1.2.1
 

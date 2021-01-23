@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.makeCitation = exports.parseSingle = exports.util = void 0;
 const validator_1 = require("./util/validator");
 const regex_1 = require("./util/regex");
 const retrieve_locator_1 = require("./util/retrieve-locator");

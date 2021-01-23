@@ -14,6 +14,7 @@
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.extractLocator = void 0;
 const regex_1 = require("../util/regex");
 const en_1 = require("../data/en");
 const de_1 = require("../data/de");

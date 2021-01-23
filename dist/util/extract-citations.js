@@ -12,6 +12,7 @@
  * END HEADER
  */
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.extractCitations = void 0;
 const validator_1 = require("./validator");
 const regex_1 = require("./regex");
 function extractCitations(file, strict = false) {

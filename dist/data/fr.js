@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.fr = void 0;
 exports.fr = {
     "livre": "book",
     "livres": "book",
