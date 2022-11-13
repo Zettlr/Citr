@@ -1,3 +1,5 @@
+# The code in this repository is no longer maintained. Most of the functionality has moved directly into the main Zettlr repository.
+
 <p align="center">
   <a href="https://github.com/Zettlr/Zettlr">
     <img src="https://raw.githubusercontent.com/Zettlr/Citr/master/citr_logo.png" alt="Citr"/>
